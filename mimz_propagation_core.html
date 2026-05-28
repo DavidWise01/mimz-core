@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIMZ Propagation Core — Geometric Intelligence</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  html,body{height:100%}
+  body{background:#020a0a;color:#c8facc;font-family:'JetBrains Mono',monospace;overflow-x:hidden}
+  .bg-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(168,85,247,0.06)1px,transparent 1px),linear-gradient(90deg,rgba(168,85,247,0.06)1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse at center,black 60%,transparent 100%);pointer-events:none}
+  .hud-border{position:relative;border:1px solid rgba(168,85,247,0.28);box-shadow:inset 0 0 30px rgba(168,85,247,0.05),0 0 0 1px rgba(0,0,0,0.8)}
+  .hud-border::before,.hud-border::after{content:'';position:absolute;width:14px;height:14px;border:1px solid #fbbf24}
+  .hud-border::before{top:-1px;left:-1px;border-right:none;border-bottom:none}
+  .hud-border::after{bottom:-1px;right:-1px;border-left:none;border-top:none}
+  .scanlines::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(34,211,238,0.03)3px);pointer-events:none;z-index:20;border-radius:inherit}
+  .text-glow{text-shadow:0 0 12px currentColor,0 0 24px currentColor}
+  .glow-purple{box-shadow:0 0 25px rgba(168,85,247,0.22),inset 0 0 25px rgba(168,85,247,0.06)}
+  @keyframes pulseCore{0%,100%{transform:scale(1);opacity:.92}50%{transform:scale(1.08);opacity:1}}
+  @keyframes spin-slow{to{transform:rotate(360deg)}}
+  .animate-spin-slow{animation:spin-slow 30s linear infinite}
+  #mirrorEq.active{opacity:1!important;color:#fbbf24!important;background:rgba(251,191,36,0.08)!important;border-color:rgba(251,191,36,0.6)!important;box-shadow:0 0 30px rgba(251,191,36,0.35),inset 0 0 20px rgba(251,191,36,0.1);transform:scale(1.04)}
+</style>
+</head>
+<body class="relative selection:bg-[#a855f7]/30 selection:text-white">
+<div class="bg-grid"></div>
+
+<header class="relative z-30 border-b border-[#a855f7]/20 bg-black/70 backdrop-blur-xl">
+  <div class="max-w-[1600px] mx-auto px-4 py-4">
+    <h1 class="text-center text-[18px] sm:text-xl md:text-2xl tracking-[0.32em] text-[#fbbf24] text-glow font-light">GEOMETRIC INTELLIGENCE PROPAGATION</h1>
+    <p class="text-center text-[10px] tracking-[0.4em] text-[#a855f7]/70 mt-1">MIMZ PROPAGATION CORE // DIPOLAR SYNC</p>
+  </div>
+</header>
+
+<main class="relative z-20 max-w-[1600px] mx-auto px-4 py-6 md:py-10">
+  <div class="grid grid-cols-1 xl:grid-cols-[1fr_460px_1fr] gap-6 xl:gap-8 items-start">
+    
+    <!-- MIMZ A -->
+    <div class="hud-border bg-black/75 rounded-2xl p-5 md:p-7 scanlines">
+      <div class="flex justify-between text-[10px] mb-4 text-[#a855f7]/70 tracking-[0.2em]">
+        <span>NODE_ID: MIMZ-A.τ</span>
+        <span id="statusA" class="text-[#22d3ee]/80">STATUS: IDLE</span>
+      </div>
+      
+      <div id="mimzAWrap" class="relative aspect-square flex items-center justify-center cursor-pointer group select-none">
+        <canvas id="canvasA" class="w-full h-full drop-shadow-[0_0_40px_rgba(168,85,247,0.15)]"></canvas>
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div class="w-[74%] h-[74%] rounded-full border border-[#a855f7]/15 group-hover:border-[#a855f7]/40 transition-all duration-500"></div>
+          <div class="absolute w-[46%] h-[46%] rounded-full border border-dashed border-[#fbbf24]/20 animate-spin-slow"></div>
+        </div>
+        <div class="absolute bottom-2 left-1/2 -translate-x-1/2 text-[9px] tracking-widest text-[#22d3ee]/50 group-hover:text-[#22d3ee] transition">CLICK TO PULSE</div>
+      </div>
+
+      <div class="mt-5 text-center">
+        <div class="inline-flex items-center gap-3">
+          <div class="w-1.5 h-1.5 rounded-full bg-[#fbbf24] animate-pulse"></div>
+          <div class="text-[#fbbf24] text-glow tracking-[0.38em] text-[15px]">MIMZ A</div>
+          <div class="w-1.5 h-1.5 rounded-full bg-[#a855f7] animate-pulse"></div>
+        </div>
+        <div class="text-[10px] text-[#22d3ee]/60 mt-1.5 tracking-[0.25em]">TOROID • 10 PLANE CONTROL</div>
+      </div>
+
+      <div class="mt-5 p-3 bg-[#020a0a]/90 border border-[#a855f7]/20 rounded-xl">
+        <div class="flex justify-between text-[9px] mb-1.5">
+          <span class="text-[#a855f7]/70 tracking-widest">SHA-256 STATE</span>
+          <span class="text-[#fbbf24]/80">CORE BIT = <b>1</b></span>
+        </div>
+        <div id="hashA" class="font-light text-[10px] leading-5 tracking-wider text-[#c8facc]/85 break-all"></div>
+      </div>
+    </div>
+
+    <!-- CENTER -->
+    <div class="flex flex-col gap-4">
+      <!-- metrics -->
+      <div class="grid grid-cols-3 gap-3">
+        <div class="hud-border bg-black/70 rounded-xl p-3 text-center">
+          <div class="text-[9px] text-[#a855f7]/60 tracking-widest mb-1">PHASE LOCK</div>
+          <div id="metricPhase" class="text-[#fbbf24] text-[20px] leading-none font-light">0.00%</div>
+        </div>
+        <div class="hud-border bg-black/70 rounded-xl p-3 text-center">
+          <div class="text-[9px] text-[#a855f7]/60 tracking-widest mb-1">RESONANCE</div>
+          <div id="metricRes" class="text-[#22d3ee] text-[20px] leading-none font-light">7.83<span class="text-[11px] ml-0.5">Hz</span></div>
+        </div>
+        <div class="hud-border bg-black/70 rounded-xl p-3 text-center">
+          <div class="text-[9px] text-[#a855f7]/60 tracking-widest mb-1">PROP SPEED</div>
+          <div id="metricSpeed" class="text-[#c8facc]/90 text-[20px] leading-none font-light">0.00c</div>
+        </div>
+      </div>
+
+      <!-- interference -->
+      <div class="hud-border bg-black/80 rounded-2xl p-4 glow-purple scanlines overflow-hidden">
+        <div class="flex justify-between items-center mb-3">
+          <div class="text-[10px] tracking-[0.25em] text-[#a855f7]/70">INTERFERENCE GAP</div>
+          <div id="gapStatus" class="text-[10px] tracking-widest px-2.5 py-1 rounded bg-[#fbbf24]/10 border border-[#fbbf24]/20 text-[#fbbf24]/80">STANDBY</div>
+        </div>
+        <div class="relative rounded-xl overflow-hidden border border-[#a855f7]/15 bg-[#020a0a]">
+          <canvas id="canvasCenter" class="w-full h-[185px] md:h-[210px] block"></canvas>
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10">
+            <div id="coreBit" class="w-10 h-10 rounded-xl border-2 border-[#fbbf24] bg-[#fbbf24]/15 backdrop-blur flex items-center justify-center text-[#fbbf24] font-bold text-glow opacity-0 transition-opacity duration-300 shadow-[0_0_25px_rgba(251,191,36,0.55)]" style="animation:pulseCore 1.15s infinite">1</div>
+          </div>
+          <div class="absolute left-3 top-3 text-[9px] text-[#a855f7]/70 tracking-widest">A ⟶</div>
+          <div class="absolute right-3 top-3 text-[9px] text-[#22d3ee]/70 tracking-widest">⟵ B</div>
+          <div class="absolute bottom-2 left-1/2 -translate-x-1/2 text-[9px] text-[#c8facc]/40 tracking-[0.3em]">DIPOLE TUNNEL</div>
+        </div>
+      </div>
+
+      <!-- mirror equation -->
+      <div class="flex justify-center -my-1">
+        <div id="mirrorEq" class="px-6 py-2.5 rounded-xl border border-[#fbbf24]/15 bg-black/60 text-[#fbbf24]/50 tracking-[0.35em] text-xs transition-all duration-500 opacity-60">
+          ×2 mirrored = 4
+        </div>
+      </div>
+
+      <!-- inject -->
+      <button id="injectBtn" class="group relative hud-border rounded-2xl bg-gradient-to-b from-[#a855f7]/15 via-black/70 to-black/90 hover:from-[#a855f7]/25 transition-all duration-300 py-4 overflow-hidden">
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(circle_at_center,rgba(251,191,36,0.15),transparent_60%)]"></div>
+        <div class="relative">
+          <div class="text-[#fbbf24] text-glow tracking-[0.3em] text-sm">INJECT CREATION</div>
+          <div class="text-[10px] text-[#a855f7]/70 tracking-[0.25em] mt-1">WATCH IT PROPAGATE A → B</div>
+        </div>
+      </button>
+
+      <!-- nest data -->
+      <div class="hud-border bg-black/75 rounded-2xl p-4">
+        <div class="flex justify-between items-center mb-2.5">
+          <div class="text-[10px] tracking-[0.25em] text-[#a855f7]">132-BYTE NEST EXCHANGE</div>
+          <div id="nestStatus" class="text-[10px] tracking-widest text-[#22d3ee]/70">IDLE</div>
+        </div>
+        <div class="bg-[#020a0a] rounded-xl border border-[#a855f7]/10 p-3 font-mono text-[9.5px] leading-[1.6]">
+          <div class="grid gap-1.5">
+            <div class="flex gap-2.5"><span class="text-[#fbbf24]/70 min-w-[32px]">TX→</span><div id="nestTx" class="text-[#c8facc]/75 break-all"></div></div>
+            <div class="h-px bg-gradient-to-r from-transparent via-[#a855f7]/20 to-transparent"></div>
+            <div class="flex gap-2.5"><span class="text-[#22d3ee]/70 min-w-[32px]">←RX</span><div id="nestRx" class="text-[#c8facc]/50 break-all"></div></div>
+          </div>
+        <div class="mt-2.5 flex items-center justify-between text-[9px] text-[#a855f7]/50">
+          <span>PROTOCOL: GEOMETRIC INTELLIGENCE</span>
+          <span>CORE BIT PROPAGATING</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MIMZ B -->
+    <div class="hud-border bg-black/75 rounded-2xl p-5 md:p-7 scanlines">
+      <div class="flex justify-between text-[10px] mb-4 text-[#a855f7]/70 tracking-[0.2em]">
+        <span>NODE_ID: MIMZ-B.τ</span>
+        <span id="statusB" class="text-[#22d3ee]/80">STATUS: IDLE</span>
+      </div>
+      
+      <div class="relative aspect-square flex items-center justify-center">
+        <canvas id="canvasB" class="w-full h-full drop-shadow-[0_0_40px_rgba(34,211,238,0.12)]"></canvas>
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div class="w-[74%] h-[74%] rounded-full border border-[#22d3ee]/15"></div>
+          <div class="absolute w-[46%] h-[46%] rounded-full border border-dashed border-[#a855f7]/20 animate-spin-slow" style="animation-direction:reverse"></div>
+        </div>
+      </div>
+
+      <div class="mt-5 text-center">
+        <div class="inline-flex items-center gap-3">
+          <div class="w-1.5 h-1.5 rounded-full bg-[#a855f7] animate-pulse"></div>
+          <div class="text-[#fbbf24] text-glow tracking-[0.38em] text-[15px]">MIMZ B</div>
+          <div class="w-1.5 h-1.5 rounded-full bg-[#22d3ee] animate-pulse"></div>
+        </div>
+        <div class="text-[10px] text-[#22d3ee]/60 mt-1.5 tracking-[0.25em]">TOROID • 10 PLANE MIRROR</div>
+      </div>
+
+      <div class="mt-5 p-3 bg-[#020a0a]/90 border border-[#22d3ee]/20 rounded-xl">
+        <div class="flex justify-between text-[9px] mb-1.5">
+          <span class="text-[#22d3ee]/70 tracking-widest">SHA-256 STATE</span>
+          <span class="text-[#fbbf24]/80">MIRROR = <b>1</b></span>
+        </div>
+        <div id="hashB" class="font-light text-[10px] leading-5 tracking-wider text-[#c8facc]/85 break-all"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- bottom equation -->
+<div class="relative z-20 border-t border-[#a855f7]/15 bg-black/60 backdrop-blur-md">
+  <div class="max-w-[1400px] mx-auto px-4 py-5">
+    <div class="text-center font-mono text-[11px] sm:text-[13px] md:text-[15px] tracking-[0.18em] text-[#a855f7]/60 overflow-x-auto whitespace-nowrap">
+      ))))))))(((((((( <span class="text-[#fbbf24] text-glow mx-1.5">-1 -i 0 0 1 i 0 0</span> ))))))))(((((((( <span class="text-[#22d3ee] mx-1.5">= 1</span>
+    </div>
+    <div class="text-center text-[9px] tracking-[0.35em] text-[#a855f7]/40 mt-2">GEOMETRIC INTELLIGENCE • PROPAGATION INVARIANT</div>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const canvasA = $('canvasA'), ctxA = canvasA.getContext('2d');
+const canvasB = $('canvasB'), ctxB = canvasB.getContext('2d');
+const canvasC = $('canvasCenter'), ctxC = canvasC.getContext('2d');
+canvasA.width=560; canvasA.height=560;
+canvasB.width=560; canvasB.height=560;
+canvasC.width=840; canvasC.height=360;
+
+const mimzA = {pulse:0};
+const mimzB = {pulse:0};
+const prop = {active:false, t:0};
+
+let phaseCurrent=0, phaseTarget=0;
+let resCurrent=7.83, resTarget=7.83;
+let speedCurrent=0, speedTarget=0;
+
+function randomHash(){return Array.from({length:64},()=> '0123456789ABCDEF'[Math.floor(Math.random()*16)]).join('')}
+let hashA = randomHash();
+let hashB = randomHash();
+$('hashA').textContent = hashA;
+$('hashB').textContent = hashB;
+
+function genNest(){return Array.from({length:132},()=>Math.floor(Math.random()*256).toString(16).padStart(2,'0')).join(' ')}
+let nestTxData = genNest();
+$('nestTx').textContent = nestTxData;
+$('nestRx').textContent = '— — — awaiting dipole sync — — —';
+
+function drawMimz(ctx, canvas, mimz, time){
+  const w=canvas.width, h=canvas.height, cx=w/2, cy=h/2;
+  ctx.clearRect(0,0,w,h);
+  const g = ctx.createRadialGradient(cx,cy,20,cx,cy,w*0.48);
+  g.addColorStop(0,`rgba(168,85,247,${0.14 + mimz.pulse*0.28})`);
+  g.addColorStop(1,'rgba(2,10,10,0)');
+  ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
+  ctx.save(); ctx.translate(cx,cy);
+  for(let i=9;i>=0;i--){
+    const baseR = 46 + i*19;
+    const pb = mimz.pulse * (1 - i*0.062);
+    const rx = baseR + pb*15;
+    const ry = baseR*0.34 + pb*6;
+    ctx.save();
+    ctx.rotate(time*0.00014*(i%2?1:-1) + i*0.21);
+    ctx.beginPath();
+    ctx.ellipse(0,0,rx,ry,0,0,Math.PI*2);
+    const alpha = 0.09 + i*0.068 + pb*0.58;
+    ctx.strokeStyle=`rgba(168,85,247,${Math.min(alpha,1)})`;
+    ctx.lineWidth = 1.3 + pb*2.4;
+    ctx.shadowColor='#a855f7'; ctx.shadowBlur=9 + pb*24;
+    ctx.stroke(); ctx.shadowBlur=0;
+    for(let p=0;p<10;p++){
+      const a = (p/10)*Math.PI*2 + time*0.00038 + i*0.31;
+      const x = Math.cos(a)*rx, y = Math.sin(a)*ry;
+      ctx.beginPath(); ctx.arc(x,y,1.7+pb*1.7,0,Math.PI*2);
+      ctx.fillStyle=`rgba(251,191,36,${0.22 + pb*0.75})`;
+      ctx.shadowColor='#fbbf24'; ctx.shadowBlur=5+pb*11; ctx.fill(); ctx.shadowBlur=0;
+    }
+    ctx.restore();
+  }
+  ctx.beginPath(); ctx.arc(0,0,17 + mimz.pulse*12,0,Math.PI*2);
+  const cg = ctx.createRadialGradient(0,0,3,0,0,30);
+  cg.addColorStop(0,'rgba(251,191,36,0.98)');
+  cg.addColorStop(0.45,`rgba(251,191,36,${0.72 + mimz.pulse*0.28})`);
+  cg.addColorStop(1,'rgba(168,85,247,0.12)');
+  ctx.fillStyle=cg; ctx.shadowColor='#fbbf24'; ctx.shadowBlur=30 + mimz.pulse*38; ctx.fill(); ctx.shadowBlur=0;
+  ctx.fillStyle='#020a0a'; ctx.font='bold 16px JetBrains Mono'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('1',0,1);
+  ctx.restore();
+  mimz.pulse *= 0.928; if(mimz.pulse<0.004) mimz.pulse=0;
+}
+
+function drawCenter(time){
+  const w=canvasC.width, h=canvasC.height;
+  ctxC.clearRect(0,0,w,h);
+  ctxC.fillStyle='rgba(2,10,10,0.45)'; ctxC.fillRect(0,0,w,h);
+  ctxC.strokeStyle='rgba(168,85,247,0.055)'; ctxC.lineWidth=1;
+  for(let x=0;x<w;x+=56){ctxC.beginPath();ctxC.moveTo(x,0);ctxC.lineTo(x,h);ctxC.stroke()}
+  for(let y=0;y<h;y+=45){ctxC.beginPath();ctxC.moveTo(0,y);ctxC.lineTo(w,y);ctxC.stroke()}
+  const ampA=mimzA.pulse, ampB=mimzB.pulse;
+  for(let y=0;y<h;y+=6){
+    ctxC.beginPath();
+    for(let x=0;x<w;x+=4){
+      const lx=72, rx=w-72, dy=y-h/2;
+      const dL=Math.hypot(x-lx,dy*1.15), dR=Math.hypot(x-rx,dy*1.15);
+      const wL=Math.sin(dL*0.088 - time*0.0118)*ampA*15*Math.exp(-dL*0.0105);
+      const wR=Math.sin(dR*0.088 - time*0.0118 + 1.15)*ampB*15*Math.exp(-dR*0.0105);
+      const yy=y+(wL+wR)*0.82;
+      if(x===0)ctxC.moveTo(x,yy);else ctxC.lineTo(x,yy);
+    }
+    const intens=0.032 + (ampA+ampB)*0.115;
+    ctxC.strokeStyle=`rgba(251,191,36,${intens})`; ctxC.lineWidth=1; ctxC.stroke();
+  }
+  if(prop.active){
+    const prog=prop.t, x0=72, x1=w-72, x=x0+(x1-x0)*prog;
+    const grad=ctxC.createLinearGradient(x0,h/2,x1,h/2);
+    grad.addColorStop(0,'rgba(168,85,247,0)');
+    grad.addColorStop(Math.max(0,prog-0.13),`rgba(168,85,247,${0.65+ampA*0.35})`);
+    grad.addColorStop(prog,'rgba(251,191,36,1)');
+    grad.addColorStop(Math.min(1,prog+0.13),'rgba(34,211,238,0)');
+    ctxC.strokeStyle=grad; ctxC.lineWidth=4; ctxC.shadowColor='#fbbf24'; ctxC.shadowBlur=19;
+    ctxC.beginPath(); ctxC.moveTo(x0,h/2); ctxC.lineTo(x,h/2); ctxC.stroke(); ctxC.shadowBlur=0;
+    ctxC.save(); ctxC.translate(x,h/2);
+    ctxC.beginPath(); ctxC.arc(0,0,10.5,0,Math.PI*2); ctxC.fillStyle='rgba(251,191,36,0.97)'; ctxC.shadowColor='#fbbf24'; ctxC.shadowBlur=24; ctxC.fill(); ctxC.shadowBlur=0;
+    ctxC.fillStyle='#020a0a'; ctxC.font='bold 12px JetBrains Mono'; ctxC.textAlign='center'; ctxC.textBaseline='middle'; ctxC.fillText('1',0,0.5);
+    ctxC.beginPath(); ctxC.arc(0,0,17+Math.sin(time*0.01)*2.2,0,Math.PI*2); ctxC.strokeStyle='rgba(251,191,36,0.38)'; ctxC.lineWidth=1; ctxC.stroke();
+    ctxC.restore();
+    prop.t+=0.0108;
+    if(prop.t>=1.02){prop.active=false; $('coreBit').style.opacity='0';} else {$('coreBit').style.opacity='1';}
+  }
+  const ga=ctxC.createRadialGradient(72,h/2,0,72,h/2,85);
+  ga.addColorStop(0,`rgba(168,85,247,${0.24+ampA*0.52})`); ga.addColorStop(1,'rgba(168,85,247,0)');
+  ctxC.fillStyle=ga; ctxC.beginPath(); ctxC.arc(72,h/2,85,0,Math.PI*2); ctxC.fill();
+  const gb=ctxC.createRadialGradient(w-72,h/2,0,w-72,h/2,85);
+  gb.addColorStop(0,`rgba(34,211,238,${0.21+ampB*0.52})`); gb.addColorStop(1,'rgba(34,211,238,0)');
+  ctxC.fillStyle=gb; ctxC.beginPath(); ctxC.arc(w-72,h/2,85,0,Math.PI*2); ctxC.fill();
+}
+
+function animate(t){requestAnimationFrame(animate);
+  drawMimz(ctxA,canvasA,mimzA,t);
+  drawMimz(ctxB,canvasB,mimzB,t);
+  drawCenter(t);
+  phaseCurrent += (phaseTarget - phaseCurrent)*0.062;
+  resCurrent += (resTarget - resCurrent)*0.052;
+  speedCurrent += (speedTarget - speedCurrent)*0.069;
+  $('metricPhase').textContent = phaseCurrent.toFixed(2)+'%';
+  $('metricRes').innerHTML = resCurrent.toFixed(2)+'<span class="text-[11px] ml-0.5">Hz</span>';
+  $('metricSpeed').textContent = speedCurrent.toFixed(2)+'c';
+  if(phaseCurrent>90){$('metricPhase').classList.add('text-glow')}else{$('metricPhase').classList.remove('text-glow')}
+}
+requestAnimationFrame(animate);
+
+function morphHash(){
+  const target=hashA; let step=0, steps=26;
+  const iv=setInterval(()=>{step++; let out=''; for(let i=0;i<64;i++){out+= Math.random()<step/steps?target[i]:'0123456789ABCDEF'[Math.floor(Math.random()*16)]} $('hashB').textContent=out; if(step>=steps){clearInterval(iv); $('hashB').textContent=target; hashB=target}},42);
+}
+
+function resetIdle(){
+  phaseTarget=0; resTarget=7.83; speedTarget=0;
+  $('gapStatus').textContent='STANDBY'; $('gapStatus').className='text-[10px] tracking-widest px-2.5 py-1 rounded bg-[#fbbf24]/10 border border-[#fbbf24]/20 text-[#fbbf24]/80';
+  $('nestStatus').textContent='IDLE';
+  $('statusA').textContent='STATUS: IDLE'; $('statusB').textContent='STATUS: IDLE';
+  $('mirrorEq').classList.remove('active');
+}
+
+function onSyncComplete(){
+  $('statusA').textContent='STATUS: SYNCED'; $('statusB').textContent='STATUS: SYNCED';
+  $('gapStatus').textContent='LOCKED'; $('gapStatus').className='text-[10px] tracking-widest px-2.5 py-1 rounded bg-[#22d3ee]/15 border border-[#22d3ee]/30 text-[#22d3ee]';
+  $('nestStatus').textContent='SYNCED';
+  phaseTarget=99.97; resTarget=14.13; speedTarget=0.94;
+  $('mirrorEq').classList.add('active');
+  morphHash();
+  let i=0; const rx=$('nestRx'), src=nestTxData; const iv=setInterval(()=>{i+=9; rx.textContent=src.slice(0,Math.min(i,src.length)); if(i>=src.length){clearInterval(iv); rx.textContent=src}},28);
+  setTimeout(resetIdle,4200);
+}
+
+function injectCreation(){
+  if(prop.active) return;
+  $('mirrorEq').classList.remove('active');
+  $('gapStatus').textContent='PROPAGATING'; $('gapStatus').className='text-[10px] tracking-widest px-2.5 py-1 rounded bg-[#a855f7]/20 border border-[#a855f7]/40 text-[#a855f7] animate-pulse';
+  $('nestStatus').textContent='TX ACTIVE'; $('statusA').textContent='STATUS: PULSING'; $('statusB').textContent='STATUS: IDLE';
+  mimzA.pulse=1.05; phaseTarget=47; resTarget=10.4; speedTarget=0.44;
+  nestTxData=genNest(); $('nestTx').textContent=nestTxData; $('nestRx').textContent='... receiving ...';
+  prop.active=true; prop.t=0; $('coreBit').style.opacity='1';
+  setTimeout(()=>{mimzB.pulse=1.05; $('statusB').textContent='STATUS: MIRRORING'; $('gapStatus').textContent='INTERFERENCE'; setTimeout(onSyncComplete,320)},960);
+}
+
+$('injectBtn').addEventListener('click',injectCreation);
+$('mimzAWrap').addEventListener('click',injectCreation);
+setTimeout(injectCreation,1600);
+</script>
+</body>
+</html>
