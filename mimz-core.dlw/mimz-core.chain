@@ -1,9 +1,9 @@
 ROOT0-DLW-CHAIN-v1
 index : 1339
 slug  : mimz-core
-seal  : a6b6f4bda9c929a9aad534477660b8b1fec0610ce7e3f538dddee5b27f797072
-prev  : b8fb969551b663b0a7d04e129b2322e597ebb31ed4223e6358f6cecd5c2ca770
-link  : f767e17ef8e509357fba4eda48ddc834a1b8121ebc9cf74253851c349da5b727
-head  : 41f029ee4eaa0042c67040dc5927434f8e8446341839c86b6a09d79c5fbf30da
+seal  : d5611745f571d575e53c1626855cddee97e0a9f1b6080fc8b9341689cdcff5dc
+prev  : bdd8c044063496ba7428b37aa1e4ba29cebc0bd73ad18b4597db57785d468f41
+link  : 5b35a7f1d649a5d362898950b6f026574c22a77daaa6e51d8a15fc2257989c47
+head  : c4d41afeaef76470528856d54d86cf480a0e1c2fc8ebc60fbb9eb8e442585f2b
 
 — the tether: link = sha256(index|slug|seal|prev). the chain head commits to the whole corpus.
